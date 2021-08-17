@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const isLoggedIn = require("../middleware/isLoggedIn");
-
+const multer = require("../middleware/multer-config");
 const publicationControl = require("../controllers/publication");
 
-router.post("/new", publicationControl.createPublication);
+router.post("/new", multer, publicationControl.createPublication);
+router.get("/all", publicationControl.getAllPost);
+router.put("/modifyPost", multer, publicationControl.modifyPublication);
+router.delete("/deletePost/:id", multer, publicationControl.deletePost);
 
 module.exports = router;

@@ -160,7 +160,9 @@ exports.getAccount = (request, response) => {
 	const userId = jwtUtils.getUserId(headerAuth);
 
 	if (userId < 0) {
-		return response.status(400).json(["Token invalide !"]);
+		return response
+			.status(400)
+			.json("Token expiré, merci de vous reconnecter !");
 	}
 
 	models.User.findOne({
@@ -182,10 +184,15 @@ exports.getAccount = (request, response) => {
 exports.modifyAccount = (request, response) => {
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
-	console.log(userId);
 	const firstname = request.body.firstname;
 	const lastname = request.body.lastname;
 	const region = request.body.region;
+
+	if (userId < 0) {
+		return response
+			.status(400)
+			.json("Token expiré, merci de vous reconnecter !");
+	}
 
 	asyncLib.waterfall(
 		[
@@ -197,7 +204,7 @@ exports.modifyAccount = (request, response) => {
 						done(null, userFound);
 					})
 					.catch(function (err) {
-						return response.status(500).json(["Utilisateur introuvable !"]);
+						return response.status(500).json("Utilisateur introuvable !");
 					});
 			},
 			(userFound, done) => {
@@ -212,10 +219,10 @@ exports.modifyAccount = (request, response) => {
 							done(userFound);
 						})
 						.catch((error) => {
-							response.status(500).json(["Impossible de modifier le compte !"]);
+							response.status(500).json("Impossible de modifier le compte !");
 						});
 				} else {
-					response.status(404).json(["Utilisateur introuvable !"]);
+					response.status(404).json("Utilisateur introuvable !");
 				}
 			},
 		],
@@ -223,9 +230,7 @@ exports.modifyAccount = (request, response) => {
 			if (userFound) {
 				return response.status(201).json(userFound);
 			} else {
-				return response
-					.status(500)
-					.json(["Impossible de modifier le compte !"]);
+				return response.status(500).json("Impossible de modifier le compte !");
 			}
 		}
 	);

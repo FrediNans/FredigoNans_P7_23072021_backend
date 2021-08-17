@@ -14,14 +14,15 @@ module.exports = (sequelize, DataTypes) => {
 					allowNull: false,
 				},
 			});
+			models.Publication.hasMany(models.Comment);
 		}
 	}
 	Publication.init(
 		{
-			userId: DataTypes.INTEGER,
 			title: DataTypes.STRING,
-			content: DataTypes.STRING,
+			content: DataTypes.TEXT,
 			likes: DataTypes.INTEGER,
+			imageUrl: DataTypes.STRING,
 		},
 		{
 			sequelize,
