@@ -5,6 +5,10 @@
 $ npm install    
 $ nodemon server    
 
-run on localhost 8080
+Listening on port 8080   
+
+## Création BDD vide
+
+$ sequelize db:migrate
 
 
