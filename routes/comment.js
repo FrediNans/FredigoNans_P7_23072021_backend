@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require("../middleware/multer-config");
 const commentControl = require("../controllers/comment");
 
-router.post("/new", commentControl.createComment);
+router.post("/new", multer, commentControl.createComment);
+router.get("/all/:id", commentControl.getAllCommentForThisPost);
 
 module.exports = router;

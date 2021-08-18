@@ -16,9 +16,10 @@ module.exports = {
 					key: "id",
 				},
 			},
-			postId: {
+			publicationId: {
 				allowNull: false,
 				type: Sequelize.INTEGER,
+				onDelete: "CASCADE",
 				references: {
 					model: "Publications",
 					key: "id",

@@ -109,9 +109,19 @@ exports.getAllPost = (request, response) => {
 				model: models.User,
 				attributes: ["firstname", "lastname"],
 			},
+			{
+				model: models.Comment,
+				include: [
+					{
+						model: models.User,
+						attributes: ["firstname", "lastname"],
+					},
+				],
+			},
 		],
 	})
 		.then(function (messages) {
+			console.log(messages);
 			if (messages) {
 				response.status(200).json(messages);
 			} else {
