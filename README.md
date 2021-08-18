@@ -1,6 +1,6 @@
 # FredigoNans_P7_23072021_backend
 
-## Instalation:   
+## Installation:   
 
 $ npm install    
 $ nodemon server    
