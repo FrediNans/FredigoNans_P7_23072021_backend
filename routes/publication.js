@@ -5,6 +5,7 @@ const publicationControl = require("../controllers/publication");
 
 router.post("/new", multer, publicationControl.createPublication);
 router.get("/all", publicationControl.getAllPost);
+router.get("/:id", publicationControl.getOnePost);
 router.put("/modifyPost", multer, publicationControl.modifyPublication);
 router.delete("/deletePost/:id", multer, publicationControl.deletePost);
 

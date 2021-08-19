@@ -103,7 +103,7 @@ exports.getAllPost = (request, response) => {
 	}
 
 	models.Publication.findAll({
-		order: [order != null ? order.split(":") : ["id", "ASC"]],
+		order: [order != null ? order.split(":") : ["id", "DESC"]],
 		include: [
 			{
 				model: models.User,
@@ -120,10 +120,50 @@ exports.getAllPost = (request, response) => {
 			},
 		],
 	})
-		.then(function (messages) {
-			console.log(messages);
-			if (messages) {
-				response.status(200).json(messages);
+		.then((posts) => {
+			if (posts) {
+				response.status(200).json(posts);
+			} else {
+				response.status(404).json({ error: "no messages found" });
+			}
+		})
+		.catch(function (error) {
+			console.log(error);
+			response.status(500).json({ error: "invalid fields" });
+		});
+};
+
+exports.getOnePost = (request, response) => {
+	const headerAuth = request.headers["authorization"];
+	const userId = jwtUtils.getUserId(headerAuth);
+	if (userId < 0) {
+		return response
+			.status(400)
+			.json("Token expiré, merci de vous reconnecter !");
+	}
+	models.Publication.findOne({
+		where: {
+			id: request.params.id,
+		},
+		include: [
+			{
+				model: models.User,
+				attributes: ["firstname", "lastname"],
+			},
+			{
+				model: models.Comment,
+				include: [
+					{
+						model: models.User,
+						attributes: ["firstname", "lastname"],
+					},
+				],
+			},
+		],
+	})
+		.then((post) => {
+			if (post) {
+				response.status(200).json(post);
 			} else {
 				response.status(404).json({ error: "no messages found" });
 			}

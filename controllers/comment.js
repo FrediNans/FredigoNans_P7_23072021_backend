@@ -22,7 +22,7 @@ exports.createComment = (request, response) => {
 		.catch((error) => response.status(500).json([error]));
 };
 
-exports.getAllCommentForThisPost = (request, response) => {
+exports.getOneComment = (request, response) => {
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
 	if (userId < 0) {
@@ -30,17 +30,8 @@ exports.getAllCommentForThisPost = (request, response) => {
 			.status(400)
 			.json("Token expiré, merci de vous reconnecter !");
 	}
-	const postId = request.params.id;
-	const limit = parseInt(request.query.limit);
-	const order = request.query.order;
-
-	if (limit > ITEMS_LIMIT) {
-		limit = ITEMS_LIMIT;
-	}
-
-	models.Comment.findAll({
-		where: { PublicationId: postId },
-		order: [order != null ? order.split(":") : ["id", "ASC"]],
+	models.Comment.findOne({
+		where: { id: request.params.id },
 		include: [
 			{
 				model: models.User,
@@ -48,15 +39,68 @@ exports.getAllCommentForThisPost = (request, response) => {
 			},
 		],
 	})
-		.then(function (comments) {
-			if (comments) {
-				response.status(200).json(comments);
-			} else {
-				response.status(404).json({ error: "no comments found" });
+		.then((comment) => {
+			response.status(200).json(comment);
+		})
+		.catch((error) => {
+			console.log(error);
+			response.status(500).json({ error });
+		});
+};
+
+exports.modifyComment = (request, response) => {
+	const headerAuth = request.headers["authorization"];
+	const userId = jwtUtils.getUserId(headerAuth);
+	if (userId < 0) {
+		return response
+			.status(400)
+			.json("Token expiré, merci de vous reconnecter !");
+	}
+	models.Comment.findOne({
+		where: { id: request.params.id },
+		include: [
+			{
+				model: models.User,
+				attributes: ["firstname", "lastname"],
+			},
+		],
+	})
+		.then((comment) => {
+			comment
+				.update({
+					comment: request.body.comment,
+				})
+				.then((updatedComment) => response.status(200).json(updatedComment))
+				.catch((error) => {
+					response.status(500).json({ error });
+				});
+		})
+		.catch((error) => {
+			response.status(500).json({ error });
+		});
+};
+
+exports.deleteComment = (request, response) => {
+	const headerAuth = request.headers["authorization"];
+	const userId = jwtUtils.getUserId(headerAuth);
+	if (userId < 0) {
+		return response
+			.status(400)
+			.json("Token expiré, merci de vous reconnecter !");
+	}
+	models.Comment.findOne({
+		where: { id: request.params.id },
+	})
+		.then((comment) => {
+			if (comment) {
+				comment
+					.destroy()
+					.then(response.status(200).json("Commentaire supprimé !"))
+					.catch((error) => response.status(404).json("Post introuvable !"));
 			}
 		})
-		.catch(function (err) {
-			console.log(err);
-			response.status(500).json({ error: "invalid fields" });
+		.catch((error) => {
+			console.log(error);
+			response.status(500).json({ error });
 		});
 };
