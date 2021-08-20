@@ -51,14 +51,16 @@ exports.createPublication = (request, response) => {
 exports.modifyPublication = (request, response) => {
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
-	let post = JSON.parse(request.body.post);
+	let post = request.body.post;
+	const imageToDelete = request.body.imageToDelete;
 	if (userId < 0) {
 		return response
 			.status(400)
 			.json("Token expiré, merci de vous reconnecter !");
 	}
+
 	models.Publication.findOne({
-		where: { id: post.id },
+		where: { id: request.params.id },
 	})
 		.then((publicationFound) => {
 			if (request.file && publicationFound.imageUrl != null) {
@@ -70,8 +72,22 @@ exports.modifyPublication = (request, response) => {
 						request.file.filename
 					}`,
 				};
-			} else {
-				post = { ...JSON.parse(request.body.post) };
+			}
+			if (request.file && publicationFound.imageUrl == null) {
+				post = {
+					...JSON.parse(request.body.post),
+					imageUrl: `${request.protocol}://${request.get("host")}/images/${
+						request.file.filename
+					}`,
+				};
+			}
+			if (!request.file && imageToDelete != null) {
+				const filename = imageToDelete.split("/images/")[1];
+				fs.unlinkSync(`images/${filename}`);
+				post = {
+					...JSON.parse(request.body.post),
+					imageUrl: null,
+				};
 			}
 			publicationFound
 				.update({

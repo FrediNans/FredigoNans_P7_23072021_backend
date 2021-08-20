@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `groupomania_development` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `groupomania_development`;
 -- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
 -- Host: localhost    Database: groupomania_development
@@ -18,12 +16,14 @@ USE `groupomania_development`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping events for database 'groupomania_development'
+-- Dumping data for table `sequelizemeta`
 --
 
---
--- Dumping routines for database 'groupomania_development'
---
+LOCK TABLES `sequelizemeta` WRITE;
+/*!40000 ALTER TABLE `sequelizemeta` DISABLE KEYS */;
+INSERT INTO `sequelizemeta` VALUES ('20210726112315-create-user.js'),('20210806082050-create-publication.js'),('20210817094519-create-comment.js');
+/*!40000 ALTER TABLE `sequelizemeta` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -34,4 +34,4 @@ USE `groupomania_development`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-18 12:07:56
+-- Dump completed on 2021-08-20 11:51:31

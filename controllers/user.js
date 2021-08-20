@@ -235,3 +235,29 @@ exports.modifyAccount = (request, response) => {
 		}
 	);
 };
+
+exports.deleteAccount = (request, response) => {
+	const headerAuth = request.headers["authorization"];
+	const userId = jwtUtils.getUserId(headerAuth);
+
+	if (userId < 0) {
+		return response
+			.status(400)
+			.json("Token expiré, merci de vous reconnecter !");
+	}
+
+	models.User.findOne({
+		where: { id: request.params.id },
+	})
+		.then((user) => {
+			if (user) {
+				user
+					.destroy()
+					.then(response.status(201).json(user))
+					.catch(response.status(404).json(["Utilisateur introuvable !"]));
+			}
+		})
+		.catch((err) => {
+			response.status(500).json("Utilisateur introuvable !");
+		});
+};

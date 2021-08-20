@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `groupomania_development` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `groupomania_development`;
 -- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
 -- Host: localhost    Database: groupomania_development
@@ -18,27 +16,13 @@ USE `groupomania_development`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `sequelizemeta`
+-- Dumping data for table `users`
 --
 
-DROP TABLE IF EXISTS `sequelizemeta`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sequelizemeta` (
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`name`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sequelizemeta`
---
-
-LOCK TABLES `sequelizemeta` WRITE;
-/*!40000 ALTER TABLE `sequelizemeta` DISABLE KEYS */;
-INSERT INTO `sequelizemeta` VALUES ('20210726112315-create-user.js'),('20210806082050-create-publication.js'),('20210817094519-create-comment.js');
-/*!40000 ALTER TABLE `sequelizemeta` ENABLE KEYS */;
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'groupomania.moderator@mail.com','Modérateur','Groupomania','$2b$10$SgdSyGqYa38fNXgC3MY43eVoU7gYw.q2ozwFYsxs6dWqNt.NGUIAm',NULL,1,'2021-08-20 09:36:00','2021-08-20 09:36:00');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +34,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-18 12:07:55
+-- Dump completed on 2021-08-20 11:51:32

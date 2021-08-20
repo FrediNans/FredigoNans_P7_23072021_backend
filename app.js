@@ -1,7 +1,6 @@
 /**
  * @module Express Micro framework
  * @module BodyParser Body parsing middleware
- * @module Mongoose Manages the Mongodb database
  */
 require("dotenv").config();
 const express = require("express");
@@ -10,7 +9,6 @@ const path = require("path");
 const expressSecure = require("helmet");
 const dataCleaner = require("express-mongo-sanitize");
 const requestLimiter = require("express-rate-limit");
-const mysql = require("mysql");
 const cors = require("cors");
 
 /**
