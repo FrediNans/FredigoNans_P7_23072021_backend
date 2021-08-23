@@ -1,7 +1,8 @@
 // Imports
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-const JWT_SIGN_SECRET = "<JWT_SIGN_TOKEN>";
+const JWT_SIGN_SECRET = process.env.TOKEN_KEY;
 
 // Exported functions
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
 			},
 			JWT_SIGN_SECRET,
 			{
-				expiresIn: "24h",
+				expiresIn: "168h",
 			}
 		);
 	},

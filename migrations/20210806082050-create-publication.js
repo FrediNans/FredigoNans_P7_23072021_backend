@@ -22,7 +22,6 @@ module.exports = {
 			},
 			content: {
 				type: Sequelize.TEXT,
-				allowNull: false,
 			},
 			likes: {
 				type: Sequelize.INTEGER,

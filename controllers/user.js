@@ -166,7 +166,7 @@ exports.getAccount = (request, response) => {
 	}
 
 	models.User.findOne({
-		attributes: ["id", "email", "firstname", "lastname", "region"],
+		attributes: ["id", "email", "firstname", "lastname", "region", "isAdmin"],
 		where: { id: userId },
 	})
 		.then((user) => {

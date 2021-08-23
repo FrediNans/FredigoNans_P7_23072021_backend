@@ -5,7 +5,7 @@ const fs = require("fs");
 
 // Constants
 const TITLE_LIMIT = 2;
-const CONTENT_LIMIT = 4;
+const CONTENT_LIMIT = -1;
 const ITEMS_LIMIT = 50;
 
 exports.createPublication = (request, response) => {
