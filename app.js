@@ -1,7 +1,3 @@
-/**
- * @module Express Micro framework
- * @module BodyParser Body parsing middleware
- */
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");

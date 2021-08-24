@@ -1,12 +1,19 @@
+// Modules
 const models = require("../models");
 const jwtUtils = require("../utils/jwtUtils");
-const asyncLib = require("async");
 const fs = require("fs");
 
 // Constants
 const TITLE_LIMIT = 2;
 const CONTENT_LIMIT = -1;
 const ITEMS_LIMIT = 50;
+
+/**
+ * Controller used to create Post
+ * @param {*} title
+ * @param {*} content
+ * @param {*} file
+ */
 
 exports.createPublication = (request, response) => {
 	// Getting auth header
@@ -48,16 +55,25 @@ exports.createPublication = (request, response) => {
 		.catch((error) => response.status(500).json([error]));
 };
 
+/**
+ * Controller used to modify Post
+ * @param {*} postId
+ * @param {*} request.body
+ */
+
 exports.modifyPublication = (request, response) => {
+	// Getting auth header
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
-	let post = request.body.post;
-	const imageToDelete = request.body.imageToDelete;
 	if (userId < 0) {
 		return response
 			.status(400)
 			.json("Token expiré, merci de vous reconnecter !");
 	}
+
+	// Params
+	let post = request.body.post;
+	const imageToDelete = request.body.imageToDelete;
 
 	models.Publication.findOne({
 		where: { id: request.params.id },
@@ -101,7 +117,14 @@ exports.modifyPublication = (request, response) => {
 		});
 };
 
+/**
+ * Controller used to get all Posts whit table join comment and user
+ * @param {*} request
+ * @param {*} response
+ */
+
 exports.getAllPost = (request, response) => {
+	// Getting auth header
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
 	if (userId < 0) {
@@ -109,6 +132,8 @@ exports.getAllPost = (request, response) => {
 			.status(400)
 			.json("Token expiré, merci de vous reconnecter !");
 	}
+
+	// Params
 	const fields = request.query.fields;
 	const limit = parseInt(request.query.limit);
 	const offset = parseInt(request.query.offset);
@@ -149,7 +174,12 @@ exports.getAllPost = (request, response) => {
 		});
 };
 
+/**
+ * Controller used to get one Post
+ * @param {*} postId
+ */
 exports.getOnePost = (request, response) => {
+	// Getting auth header
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
 	if (userId < 0) {
@@ -157,6 +187,7 @@ exports.getOnePost = (request, response) => {
 			.status(400)
 			.json("Token expiré, merci de vous reconnecter !");
 	}
+
 	models.Publication.findOne({
 		where: {
 			id: request.params.id,
@@ -190,7 +221,12 @@ exports.getOnePost = (request, response) => {
 		});
 };
 
+/**
+ * Controller used to delete one Post
+ * @param {*} postId
+ */
 exports.deletePost = (request, response) => {
+	// Getting auth header
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
 	const postId = request.params.id;
@@ -199,6 +235,7 @@ exports.deletePost = (request, response) => {
 			.status(400)
 			.json("Token expiré, merci de vous reconnecter !");
 	}
+
 	models.Publication.findOne({
 		where: { id: postId },
 	})

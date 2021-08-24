@@ -1,3 +1,7 @@
+/**
+ * @module multer used to download image and generate unique name for each.
+ */
+
 const multer = require("multer");
 
 const MIME_TYPES = {

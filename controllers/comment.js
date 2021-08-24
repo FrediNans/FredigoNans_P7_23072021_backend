@@ -1,18 +1,27 @@
+// Modules
 const models = require("../models");
 const jwtUtils = require("../utils/jwtUtils");
 
-const ITEMS_LIMIT = 50;
+/**
+ * Controller used to create comment
+ * @param {*} request
+ * @param {*} response
+ * @returns
+ */
 
 exports.createComment = (request, response) => {
+	// Getting auth header
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
-	const data = JSON.parse(request.body.data);
-
 	if (userId < 0) {
 		return response
 			.status(400)
 			.json("Token expiré, merci de vous reconnecter !");
 	}
+
+	// Params
+	const data = JSON.parse(request.body.data);
+
 	models.Comment.create({
 		comment: data.comment,
 		PublicationId: data.postId,
@@ -22,7 +31,14 @@ exports.createComment = (request, response) => {
 		.catch((error) => response.status(500).json([error]));
 };
 
+/**
+ * Controller used to get one comment
+ * @param {*} request
+ * @param {*} response
+ */
+
 exports.getOneComment = (request, response) => {
+	// Getting auth header
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
 	if (userId < 0) {
@@ -30,6 +46,7 @@ exports.getOneComment = (request, response) => {
 			.status(400)
 			.json("Token expiré, merci de vous reconnecter !");
 	}
+
 	models.Comment.findOne({
 		where: { id: request.params.id },
 		include: [
@@ -48,7 +65,14 @@ exports.getOneComment = (request, response) => {
 		});
 };
 
+/**
+ * Controller used to modify comment
+ * @param {*} request
+ * @param {*} response
+ */
+
 exports.modifyComment = (request, response) => {
+	// Getting auth header
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
 	if (userId < 0) {
@@ -56,6 +80,7 @@ exports.modifyComment = (request, response) => {
 			.status(400)
 			.json("Token expiré, merci de vous reconnecter !");
 	}
+
 	models.Comment.findOne({
 		where: { id: request.params.id },
 		include: [
@@ -80,7 +105,14 @@ exports.modifyComment = (request, response) => {
 		});
 };
 
+/**
+ * Controller used to delete comment
+ * @param {*} request
+ * @param {*} response
+ */
+
 exports.deleteComment = (request, response) => {
+	// Getting auth header
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
 	if (userId < 0) {
@@ -88,6 +120,7 @@ exports.deleteComment = (request, response) => {
 			.status(400)
 			.json("Token expiré, merci de vous reconnecter !");
 	}
+
 	models.Comment.findOne({
 		where: { id: request.params.id },
 	})

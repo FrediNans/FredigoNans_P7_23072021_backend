@@ -1,24 +1,24 @@
-/**
- * @module Encryption password utility
- * @module TokenGenerator tokken utility
- */
+// Modules
 const models = require("../models");
 const bcrypt = require("bcrypt");
 const jwtUtils = require("../utils/jwtUtils");
 const asyncLib = require("async");
+
 /**
- * Creation of a new User object with encrypted password
+ * Controller used to create user
  * @param {*} request
  * @param {*} response
- * @param {*} next
  */
+
 exports.signup = (request, response, next) => {
+	// Params
 	const email = request.body.email;
 	const firstname = request.body.firstname;
 	const lastname = request.body.lastname;
 	const password = request.body.password;
 	const region = request.body.region;
 
+	// Regexs
 	const emailRegex = /^[^\s@]+@[^\s@]+$/;
 	const passwordRegex = /^(?=.*\d)(?=.*[a-z]).{8,}$/;
 
@@ -99,6 +99,13 @@ exports.signup = (request, response, next) => {
 		}
 	);
 };
+
+/**
+ * Controller used to login user
+ * @param {*} request
+ * @param {*} response
+ */
+
 exports.login = (request, response) => {
 	// Params
 	const email = request.body.email;
@@ -155,10 +162,17 @@ exports.login = (request, response) => {
 		}
 	);
 };
+
+/**
+ * Controller used to get one user
+ * @param {*} request
+ * @param {*} response
+ */
+
 exports.getAccount = (request, response) => {
+	// Getting auth header
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
-
 	if (userId < 0) {
 		return response
 			.status(400)
@@ -181,18 +195,26 @@ exports.getAccount = (request, response) => {
 		});
 };
 
+/**
+ * Controller used to modify user
+ * @param {*} request
+ * @param {*} response
+ */
+
 exports.modifyAccount = (request, response) => {
+	// Getting auth header
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
-	const firstname = request.body.firstname;
-	const lastname = request.body.lastname;
-	const region = request.body.region;
-
 	if (userId < 0) {
 		return response
 			.status(400)
 			.json("Token expiré, merci de vous reconnecter !");
 	}
+
+	//Params
+	const firstname = request.body.firstname;
+	const lastname = request.body.lastname;
+	const region = request.body.region;
 
 	asyncLib.waterfall(
 		[
@@ -236,10 +258,16 @@ exports.modifyAccount = (request, response) => {
 	);
 };
 
+/**
+ * Controller used to delete user
+ * @param {*} request
+ * @param {*} response
+ */
+
 exports.deleteAccount = (request, response) => {
+	// Getting auth header
 	const headerAuth = request.headers["authorization"];
 	const userId = jwtUtils.getUserId(headerAuth);
-
 	if (userId < 0) {
 		return response
 			.status(400)
