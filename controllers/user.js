@@ -66,7 +66,7 @@ exports.signup = (request, response, next) => {
 						done(null, userFound, bcryptedPassword);
 					});
 				} else {
-					return response.status(409).json(["Utilisateur déjà existant"]);
+					return response.status(409).json("Utilisateur déjà existant");
 				}
 			},
 			(userFound, bcryptedPassword, done) => {
